@@ -3,7 +3,7 @@
   "shell": "src/cho-xue.html",
   "fragments": [
     "src/players-view.html",
-    "src/players-detail.html",
+    "src/player-detail.html",
     "src/my-view404.html"
   ],
   "sourceGlobs": [
