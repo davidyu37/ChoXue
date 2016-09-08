@@ -1,0 +1,115 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="players-data">
+
+  <script>
+  (function() {
+    //Placeholder data
+    var playerList = [
+      {
+        id: 'kobe_bryant',
+        name: 'Kobe Bryant',
+        position: 'SG',
+        number: 24,
+        organization: 'LA Lakers',
+        age: '38',
+        height: {
+          metric: '198cm',
+          us: '6\'6'
+        },
+        weight: {
+          metric: '96 kg',
+          us: '212 lb'
+        },
+        pts: '25.0',
+        reb: '5.2',
+        ast: '4.7',
+        stl: '1.4',
+        image: 'http://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/110.png&w=350&h=254',
+        video: 'cpVAGkrOXWE'
+      }
+    ];
+
+    Polymer({
+
+      is: 'players-data',
+
+      properties: {
+
+
+        players: {
+          type: Array,
+          value: playerList,
+          readOnly: true,
+          notify: true
+        },
+
+        playerId: String,
+
+        player: {
+          type: Object,
+          computed: '_computePlayer(players, playerId)',
+          notify: true
+        },
+
+        failure: {
+          type: Boolean,
+          notify: true,
+          readOnly: true
+        }
+      },
+
+      _computePlayer: function(players, playerId) {
+        for (var i = 0, player; player = players[i]; ++i) {
+          if (player.id === playerId) {
+            return player;
+          }
+        }
+      },
+
+      // _fetchItems: function(category, attempts) {
+      //   this._setFailure(false);
+      //   // Only fetch the items of a category if it has not been previously set.
+      //   if (!category || category.items) {
+      //     return;
+      //   }
+      //   this._getResource({
+      //     url: '/data/' + category.name + '.json',
+      //     onLoad: function(e) {
+      //       this.set('category.items', JSON.parse(e.target.responseText));
+      //     },
+      //     onError: function(e) {
+      //       this._setFailure(true);
+      //     }
+      //   }, attempts);
+      // },
+
+      // _getResource: function(rq, attempts) {
+      //   var xhr = new XMLHttpRequest();
+      //   xhr.addEventListener('load', rq.onLoad.bind(this));
+      //   xhr.addEventListener('error', function(e) {
+      //     // Flaky connections might fail fetching resources
+      //     if (attempts > 1) {
+      //       this.debounce('_getResource', this._getResource.bind(this, rq, attempts - 1), 200);
+      //     } else {
+      //       rq.onError.call(this, e);
+      //     }
+      //   }.bind(this));
+
+      //   xhr.open('GET', rq.url);
+      //   xhr.send();
+      // },
+
+      // refresh: function() {
+      //   if (this.categoryName) {
+      //     // Try at most 3 times to get the items.
+      //     this._fetchItems(this._getCategoryObject(this.categoryName), 3);
+      //   }
+      // }
+
+    });
+
+  })();
+  </script>
+
+</dom-module>

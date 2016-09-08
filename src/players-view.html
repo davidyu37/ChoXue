@@ -1,0 +1,133 @@
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="players-data.html">
+
+<dom-module id="players-view">
+  <template>
+    <style include="shared-styles">
+      .hero-image {
+        position: relative;
+        height: 320px;
+        overflow: hidden;
+        margin-bottom: 32px;
+      }
+
+      .hero-image {
+        --shop-image-img: {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -9999px;
+          right: -9999px;
+          max-width: none;
+        };
+      }
+
+      .grid {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-justified);
+        margin: 0 10px 32px 10px;
+      }
+
+      .grid > a {
+        -webkit-flex: 1 1;
+        flex: 1 1;
+        -webkit-flex-basis: 33%;
+        flex-basis: 33%;
+        max-width: 33%;
+        text-decoration: none;
+      }
+
+      img {
+        width: 100%;
+      }
+
+      /*img::before {
+        content: "";
+        display: block;
+        padding-top: 100%;
+      }*/
+
+      @media (max-width: 767px) {
+        .hero-image {
+          display: none;
+        }
+
+        .grid > a {
+          -webkit-flex-basis: 100%;
+          flex-basis: 100%;
+          max-width: 100%;
+        }
+      }
+
+      .title-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-justified);
+        height: 50px;
+      }
+
+      .title {
+        font-weight: bolder;
+      }
+
+      .image-container {
+        width: 75px;
+      }
+
+    </style>
+
+    <players-data
+        id="playersData"
+        players="{{players}}"
+        failure="{{failure}}"></players-data>
+  
+    <div class="grid">
+      <template is="dom-repeat" items="[[_getListItems(players)]]" initial-count="4" as="player">
+        <a href$="/player-detail/[[player.id]]">
+          <div class="card">
+            <div class="title-container">
+              <div class="image-container">
+                <img src="[[player.image]]" alt="[[player.name]]">
+              </div>
+              <div>
+                <span class="title">
+                  [[player.name]]
+                </span>
+                 - [[player.position]]
+                <br>
+                [[player.organization]] #[[player.number]]
+              </div>
+            </div>
+            
+          </div>
+        </a>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'players-view',
+
+      properties: {
+        players: Object
+      },
+
+      _getListItems: function(items) {
+        // Return placeholder items when the items haven't loaded yet.
+        return items || [{},{},{},{},{},{},{},{},{},{}];
+      },
+
+      _getItemHref: function(item) {
+        // By returning null when `itemId` is undefined, the href attribute won't be set and
+        // the link will be disabled.
+        return item.name ? ['/players-view', item.name].join('/') : null;
+      }
+
+    });
+  </script>
+</dom-module>
