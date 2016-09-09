@@ -2,15 +2,18 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/google-youtube/google-youtube.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 
 <dom-module id="player-detail">
   <template>
     <style include="shared-styles">
       :host {
         display: block;
-        padding: 10px;
       }
     </style>
+
+    <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
 
     <app-route
         route="[[route]]"
@@ -21,9 +24,33 @@
         id="playersData"
         player-id="[[routeData.playerId]]"
         player="{{player}}"></players-data>
-    <iframe width="100%" height="200px" src="https://www.youtube.com/embed/[[player.video]]" frameborder="0" allowfullscreen></iframe>
-    <div class="">
-      [[player.name]]
+    <google-youtube
+      id="videoFrame"
+      video-id="[[player.video]]"
+      rel="0"
+      width="100%"
+      height="{{videoHeight}}"
+      autoplay="1">
+    </google-youtube>
+    <div class="card">
+      <div class="title-container">
+        <div class="image-container">
+          <img src="[[player.image]]" alt="[[player.name]]">
+        </div>
+        <div>
+          <span class="title">
+            [[player.name]]
+          </span>
+           - [[player.position]]
+          <br>
+          [[player.organization]] #[[player.number]]
+        </div>
+      </div>
+      <google-chart
+        type='bar',
+        options='{"legend": "none", "animation": {"duration": "3000"}}'
+        data="[[player.stats]]">
+      </google-chart>
     </div>
   </template>
 
@@ -40,15 +67,37 @@
 
         routeData: Object,
 
-        visible: Boolean,
+        // visible: Boolean,
 
-        offline: {
-          type: Boolean,
-          observer: '_offlineChanged'
-        },
+        videoHeight: String,
 
-        failure: Boolean
+        // offline: {
+        //   type: Boolean,
+        //   observer: '_offlineChanged'
+        // },
 
+        // failure: Boolean
+
+      },
+
+      observers: [
+        '_screenSizeChange(smallScreen)',
+        '_routeChanged(route)'
+      ],
+
+      _screenSizeChange: function(isSmallScreen) {
+        if(isSmallScreen) {
+          this.videoHeight = '270px';
+        } else {
+          this.videoHeight = '100vh';
+        }
+      },
+
+      _routeChanged: function(route) {
+        //Pause the video when user change
+        if(route.prefix !== '/player-detail') {
+          this.$.videoFrame.pause();
+        }
       }
 
     });

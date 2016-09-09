@@ -2,12 +2,13 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
 <link rel="import" href="players-data.html">
 
 <dom-module id="players-view">
   <template>
     <style include="shared-styles">
-      .hero-image {
+      /*.hero-image {
         position: relative;
         height: 320px;
         overflow: hidden;
@@ -23,27 +24,7 @@
           right: -9999px;
           max-width: none;
         };
-      }
-
-      .grid {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        @apply(--layout-justified);
-        margin: 0 10px 32px 10px;
-      }
-
-      .grid > a {
-        -webkit-flex: 1 1;
-        flex: 1 1;
-        -webkit-flex-basis: 33%;
-        flex-basis: 33%;
-        max-width: 33%;
-        text-decoration: none;
-      }
-
-      img {
-        width: 100%;
-      }
+      }*/
 
       /*img::before {
         content: "";
@@ -51,32 +32,7 @@
         padding-top: 100%;
       }*/
 
-      @media (max-width: 767px) {
-        .hero-image {
-          display: none;
-        }
-
-        .grid > a {
-          -webkit-flex-basis: 100%;
-          flex-basis: 100%;
-          max-width: 100%;
-        }
-      }
-
-      .title-container {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--layout-justified);
-        height: 50px;
-      }
-
-      .title {
-        font-weight: bolder;
-      }
-
-      .image-container {
-        width: 75px;
-      }
+      
 
     </style>
 
@@ -87,7 +43,7 @@
   
     <div class="grid">
       <template is="dom-repeat" items="[[_getListItems(players)]]" initial-count="4" as="player">
-        <a href$="/player-detail/[[player.id]]">
+        <a class="item" href$="/player-detail/[[player.id]]">
           <div class="card">
             <div class="title-container">
               <div class="image-container">
@@ -102,6 +58,11 @@
                 [[player.organization]] #[[player.number]]
               </div>
             </div>
+            <google-chart
+              type='bar',
+              options='{"legend": "none", "animation": {"duration": "3000"}}'
+              data="[[player.stats]]">
+            </google-chart>
             
           </div>
         </a>
